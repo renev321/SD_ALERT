@@ -183,6 +183,7 @@ div.stLinkButton > a {
     font-weight: 800 !important;
     font-size: 1.02rem !important;
     box-shadow: 0 10px 28px rgba(22,184,90,0.22);
+    text-decoration: none !important;
 }
 
 @media (max-width: 900px) {
@@ -200,7 +201,7 @@ div.stLinkButton > a {
 left, right = st.columns([1.08, 0.92], gap="large")
 
 with left:
-    st.markdown(f"""
+    hero_html = f"""
     <div class="hero-card">
         <div class="logo-wrap">
             <img src="data:image/png;base64,{logo_b64}">
@@ -243,7 +244,8 @@ with left:
             </div>
         </div>
     </div>
-    """, unsafe_allow_html=True)
+    """
+    st.markdown(hero_html, unsafe_allow_html=True)
 
     st.link_button(
         "Desbloquear Acceso Premium",
@@ -258,14 +260,15 @@ with left:
     </div>
 
     <div class="footer-box">
-        Esta página es tu punto de entrada premium. La siguiente etapa conectará la validación del pago con la entrega privada de señales únicamente para suscriptores activos.
+        Esta suscripción da acceso a la recepción de señales exclusivas enviadas a los miembros activos.
     </div>
     """, unsafe_allow_html=True)
 
 with right:
-    st.markdown(f"""
+    chart_html = f"""
     <div class="chart-card">
-        <div class="section-label">Vista previa de señales WLF</div>
+        <div class="section-label">Ejemplo de señal enviada</div>
         <img class="chart-image" src="data:image/jpeg;base64,{chart_b64}">
     </div>
-    """, unsafe_allow_html=True)
+    """
+    st.markdown(chart_html, unsafe_allow_html=True)
