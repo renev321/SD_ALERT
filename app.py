@@ -1,6 +1,5 @@
 import streamlit as st
 from PIL import Image
-import base64
 
 st.set_page_config(
     page_title="WLF Signals Premium",
@@ -8,52 +7,84 @@ st.set_page_config(
     layout="wide",
 )
 
-# -----------------------------
-# CONFIG
-# -----------------------------
 stripe_payment_link = "https://buy.stripe.com/cNieVc4d96uu13x9OvaIM00"
 
 logo = Image.open("Logo.png")
 chart_img = Image.open("SIgnsSupplyDemmand.jpg")
 
-# -----------------------------
-# CSS
-# -----------------------------
 st.markdown("""
 <style>
-/* Fondo general */
+/* ===== Fondo general ===== */
 .stApp {
     background:
-        radial-gradient(circle at top left, rgba(14, 85, 45, 0.22), transparent 28%),
-        radial-gradient(circle at top right, rgba(180, 145, 50, 0.14), transparent 22%),
-        linear-gradient(135deg, #050505 0%, #090909 38%, #101313 100%);
-    color: #f5f5f5;
+        radial-gradient(circle at top left, rgba(12, 92, 45, 0.18), transparent 24%),
+        radial-gradient(circle at top right, rgba(193, 150, 42, 0.12), transparent 20%),
+        linear-gradient(135deg, #040404 0%, #090909 38%, #101212 100%);
+    color: #f4f4f4;
 }
 
-/* Contenedor principal */
+/* ===== Contenedor principal ===== */
 .block-container {
     max-width: 1380px;
-    padding-top: 2.2rem;
+    padding-top: 1.8rem;
     padding-bottom: 2.5rem;
 }
 
-/* Más aire arriba entre bloques */
-div[data-testid="stVerticalBlock"] > div:has(div.section-card) {
-    margin-bottom: 1rem;
+/* ===== Ocultar contenedores vacíos raros arriba ===== */
+div[data-testid="stVerticalBlock"] > div:empty {
+    display: none !important;
 }
 
-/* Tarjetas premium */
+div[data-testid="stHorizontalBlock"] > div:empty {
+    display: none !important;
+}
+
+/* ===== Tarjetas principales ===== */
 .section-card {
-    background: linear-gradient(145deg, rgba(18,18,18,0.94), rgba(9,9,9,0.90));
-    border: 1px solid rgba(255,255,255,0.07);
-    border-radius: 28px;
+    background: linear-gradient(145deg, rgba(16,16,16,0.94), rgba(8,8,8,0.92));
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 30px;
     padding: 34px 34px 30px 34px;
     box-shadow:
         0 0 0 1px rgba(255,255,255,0.02) inset,
-        0 22px 55px rgba(0,0,0,0.42);
+        0 22px 60px rgba(0,0,0,0.46);
 }
 
-/* Badge */
+/* ===== Wrapper del logo con glow ===== */
+.logo-glow-wrap {
+    position: relative;
+    display: inline-block;
+    margin-bottom: 12px;
+}
+
+.logo-glow-wrap::before {
+    content: "";
+    position: absolute;
+    inset: -18px -26px -18px -26px;
+    background:
+        radial-gradient(circle, rgba(75, 255, 136, 0.16) 0%, rgba(75,255,136,0.06) 35%, rgba(0,0,0,0) 72%);
+    filter: blur(14px);
+    z-index: 0;
+    pointer-events: none;
+}
+
+.logo-glow-wrap img {
+    position: relative;
+    z-index: 1;
+}
+
+/* ===== Texto bajo logo ===== */
+.logo-subtitle {
+    color: #b2b8bf;
+    font-size: 1.05rem;
+    font-weight: 700;
+    letter-spacing: 0.9px;
+    margin-top: 2px;
+    margin-bottom: 28px;
+    text-shadow: 0 0 12px rgba(255,255,255,0.05);
+}
+
+/* ===== Badge ===== */
 .badge {
     display: inline-block;
     padding: 9px 16px;
@@ -63,10 +94,10 @@ div[data-testid="stVerticalBlock"] > div:has(div.section-card) {
     color: #e7e7e7;
     font-size: 0.90rem;
     letter-spacing: 0.3px;
-    margin-bottom: 20px;
+    margin-bottom: 22px;
 }
 
-/* Título */
+/* ===== Título ===== */
 .hero-title {
     font-size: 3.35rem;
     line-height: 1.02;
@@ -76,23 +107,23 @@ div[data-testid="stVerticalBlock"] > div:has(div.section-card) {
 }
 
 .hero-accent {
-    background: linear-gradient(90deg, #ffffff 0%, #bfffcf 38%, #d7b462 100%);
+    background: linear-gradient(90deg, #ffffff 0%, #c3ffd0 38%, #d9b868 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
 }
 
-/* Párrafos */
+/* ===== Texto principal ===== */
 .hero-text {
-    color: #c7c7c7;
+    color: #c8c8c8;
     font-size: 1.10rem;
-    line-height: 1.8;
+    line-height: 1.82;
     margin-bottom: 26px;
 }
 
-/* Caja de precio */
+/* ===== Caja de precio ===== */
 .price-box {
-    background: linear-gradient(90deg, rgba(20,20,20,0.96), rgba(11,34,20,0.90));
+    background: linear-gradient(90deg, rgba(20,20,20,0.96), rgba(8,38,22,0.92));
     border: 1px solid rgba(110, 255, 164, 0.10);
     border-radius: 18px;
     padding: 18px 20px;
@@ -112,7 +143,7 @@ div[data-testid="stVerticalBlock"] > div:has(div.section-card) {
     line-height: 1.6;
 }
 
-/* Grid de beneficios */
+/* ===== Beneficios ===== */
 .benefit-grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -141,7 +172,7 @@ div[data-testid="stVerticalBlock"] > div:has(div.section-card) {
     line-height: 1.65;
 }
 
-/* Título lateral derecho */
+/* ===== Etiqueta derecha ===== */
 .side-label {
     color: #d8ae52;
     font-size: 0.88rem;
@@ -151,13 +182,13 @@ div[data-testid="stVerticalBlock"] > div:has(div.section-card) {
     margin-bottom: 16px;
 }
 
-/* Botón */
+/* ===== Botón ===== */
 div.stLinkButton > a {
     background: linear-gradient(90deg, #0d8d43 0%, #18b95d 42%, #d8ad52 100%);
     color: white !important;
     border: none !important;
     border-radius: 18px !important;
-    padding: 0.95rem 1.2rem !important;
+    padding: 0.98rem 1.2rem !important;
     font-weight: 800 !important;
     font-size: 1.03rem !important;
     box-shadow: 0 12px 30px rgba(24,185,93,0.20);
@@ -169,7 +200,7 @@ div.stLinkButton > a:hover {
     transform: translateY(-1px);
 }
 
-/* Notas */
+/* ===== Notas ===== */
 .note-box {
     margin-top: 18px;
     padding: 16px 18px;
@@ -181,21 +212,7 @@ div.stLinkButton > a:hover {
     font-size: 0.95rem;
 }
 
-/* Ajustes de imágenes */
-.logo-wrapper {
-    margin-bottom: 10px;
-}
-
-.logo-subtitle {
-    color: #8f949a;
-    font-size: 1.05rem;
-    font-weight: 600;
-    letter-spacing: 0.6px;
-    margin-top: 2px;
-    margin-bottom: 26px;
-    text-shadow: 0 0 10px rgba(255,255,255,0.04);
-}
-
+/* ===== Marco imagen ===== */
 .chart-frame {
     border-radius: 24px;
     overflow: hidden;
@@ -203,7 +220,7 @@ div.stLinkButton > a:hover {
     box-shadow: 0 14px 36px rgba(0,0,0,0.34);
 }
 
-/* Responsive */
+/* ===== Responsive ===== */
 @media (max-width: 900px) {
     .hero-title {
         font-size: 2.35rem;
@@ -220,15 +237,15 @@ div.stLinkButton > a:hover {
 </style>
 """, unsafe_allow_html=True)
 
-# -----------------------------
-# LAYOUT
-# -----------------------------
 left, right = st.columns([1.08, 0.92], gap="large")
 
 with left:
     st.markdown('<div class="section-card">', unsafe_allow_html=True)
 
-    st.image(logo, width=165)
+    st.markdown('<div class="logo-glow-wrap">', unsafe_allow_html=True)
+    st.image(logo, width=170)
+    st.markdown('</div>', unsafe_allow_html=True)
+
     st.markdown('<div class="logo-subtitle">WLF TRADING</div>', unsafe_allow_html=True)
 
     st.markdown('<div class="badge">Entrega Exclusiva • WLF Trading</div>', unsafe_allow_html=True)
